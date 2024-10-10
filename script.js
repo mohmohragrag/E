@@ -68,13 +68,13 @@ function calculateWeight() {
         switch (sectionType) {
             case "Steel Plates and Sheets":
                 const [lengthPlate, widthPlate, thicknessPlate] = values;
-                weight = (lengthPlate / 1000) * (widthPlate / 1000) * (thicknessPlate / 1000) * density; // Convert mm to m
+                weight = (lengthPlate / 1000) * (widthPlate / 1000) * (thicknessPlate / 1000) * (density/1000); // Convert mm to m
                 break;
 
             case "Chequered Steel Plates":
                 const [lengthCheq, widthCheq, thicknessCheq] = values;
                 const adjustedThickness = (thicknessCheq + 0.3); // Convert to meters
-                weight = (lengthCheq / 1000) * (widthCheq / 1000) * (adjustedThickness / 1000) * density; // in kg
+                weight = (lengthCheq / 1000) * (widthCheq / 1000) * (adjustedThickness / 1000) * (density/1000); // in kg
                 break;
 
             case "Seamless Steel Pipes - Circular":
@@ -83,15 +83,13 @@ function calculateWeight() {
                 break;
 
             case "Hollow Structural Sections - Square":
-                const [lengthSquare, sideLengthSquare, thicknessSquare] = values;
-                const lengthM = lengthSquare / 1000; // Convert mm to m
-                const sideLengthM = sideLengthSquare / 1000; // Convert mm to m
-                const thicknessM = thicknessSquare / 1000; // Convert mm to m
-                const outerArea = Math.pow(sideLengthM, 2);
-                const innerArea = Math.pow(sideLengthM - 2 * thicknessM, 2);
-                weight = lengthM * (outerArea - innerArea) * density; // in kg
-                break;
-
+                    const [lengthSquare, sideLengthSquare, thicknessSquare] = values; // الطول وطول الضلع وسمك الجدار بالملليمتر
+                    const lengthM = lengthSquare / 1000; // تحويل المليمتر إلى متر
+                    const sideLengthM = sideLengthSquare / 1000; // تحويل المليمتر إلى متر
+                    const thicknessM = thicknessSquare / 1000; // تحويل المليمتر إلى متر
+                    weight = (sideLengthM - thicknessM) * thicknessM * 0.025 * lengthM; // الوزن بالكيلوغرام
+                    break;
+                
             case "Hollow Structural Sections - Rectangular":
                 const [lengthRect, widthRect, heightRect, thicknessRect] = values;
                 weight = (lengthRect / 1000) * ((widthRect / 1000) * (heightRect / 1000) - ((widthRect - 2 * thicknessRect) / 1000) * ((heightRect - 2 * thicknessRect) / 1000)) * density; // in kg
